@@ -1,0 +1,64 @@
+<html>
+
+<head>
+</head>
+
+<body>
+<h1> Jokes Page </h1>
+
+<?php
+$dbhost = "{{ mysql_db_host }}";
+$db_username = "{{ mysql_db_user }}";
+$db_password = "{{ mysql_db_password }}";
+$db_in_use = "demoapp1";
+
+$link = mysqli_connect($dbhost, $db_username, $db_password, $db_in_use);
+$sql = "SELECT * FROM joke_table order by RAND() LIMIT 1";
+
+echo "<h3> APP SERVER </h3>";
+echo gethostname();
+echo "<br><br>";
+
+
+
+//if($result = mysqli_query($link, $sql)){
+
+if($result = $link->query($sql)){
+   if(mysqli_num_rows($result) > 0){
+        echo "<table>";
+            echo "<tr>";
+                echo "<th>ID</th>"; 
+                echo "<th>Joke</th>"; 
+            echo "</tr>";
+        while($row = $result->fetch_assoc()) {
+            echo "<tr>";
+                echo "<td>" . $row["JokeID"] . "</td>";
+                echo "<td>" . $row['Joke_question'] . "</td>";
+            echo "</tr>";
+       echo "</table>";
+       echo "<table>";
+            echo "<tr>";
+                echo "<th>Answer</th>";
+                echo "<td>" . $row['Joke_answer'] . "</td>";
+            echo "</tr>";
+
+
+        }
+        echo "</table>";
+        // Free result set
+        mysqli_free_result($result);
+    } else{
+        echo "No records matching your query were found.";
+    }
+} else{
+    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+}
+
+
+$conn->close();
+
+
+?>
+
+</body>
+</html>

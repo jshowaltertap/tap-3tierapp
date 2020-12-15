@@ -1,0 +1,43 @@
+---
+- name: Deploy the Web Server role to server and configure
+  hosts: appgroup
+  remote_user: root
+  gather_facts: false
+  tasks:
+    - name: Update Host System
+      dnf:
+        name: "*"
+        state: "latest"
+    - name: Install Apache and PHP
+      dnf:
+        name: "httpd, php, php-pdo, php-pecl-zip, php-json, php-common, php-fpm, php-mbstring, php-cli, php-mysqlnd, wget"
+        state: "present"
+    - name: Copy index.php template to web server
+      template:
+        src: ../templates/index.php.j2
+        dest: /var/www/html/index.php
+        mode: 644
+
+    - name: Enable the Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: True
+
+    - name: open port 80 for http access
+      firewalld:
+        zone: public
+        service: http
+        permanent: true
+        state: enabled
+    - name: restart firewalld
+      service:
+        name: firewalld
+        state: restarted
+    - name: Enable SELinux
+      selinux:
+        state: enforcing
+        policy: targeted
+    - name: Allow for Apache to make external database connections
+      command: "setsebool httpd_can_network_connect_db 1"
+        

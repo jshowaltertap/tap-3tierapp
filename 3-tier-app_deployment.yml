@@ -1,0 +1,7 @@
+---
+- name: Deploying Systems for 3 tier app
+  hosts: localhost
+  gather_facts: False 
+- import_playbook: tasks/dbhosts.yml
+- import_playbook: tasks/apphosts.yml
+- import_playbook: tasks/webhosts.yml

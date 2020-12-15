@@ -1,0 +1,42 @@
+---
+- name: Deploy the Web Server role to server and configure
+  hosts: webgroup
+  remote_user: root
+  gather_facts: false
+  tasks:
+    - name: UPDATE SYSTEM
+      dnf:
+        name: "*"
+        state: "latest"
+    - name: Install NGINX
+      dnf:
+        name: "nginx"
+        state: "present"
+    - name: Template NGINX.conf to Web server
+      template:
+        src: ../templates/nginx.conf.j2
+        dest: /etc/nginx/conf.d/nginx.conf
+        mode: 644
+    - name: Enable the NGINX service
+      service:
+        name: nginx
+        state: restarted
+        enabled: True
+
+    - name: open port 80 for http access
+      firewalld:
+        zone: public
+        service: http
+        permanent: true
+        state: enabled
+    - name: restart firewalld
+      service:
+        name: firewalld
+        state: restarted
+    - name: Enable SELinux
+      selinux:
+        state: enforcing 
+        policy: targeted
+    - name: Set SELinux to ALLOW NGINX to relay
+      command: "setsebool httpd_can_network_relay 1"
+        

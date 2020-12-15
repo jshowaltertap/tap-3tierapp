@@ -1,0 +1,9 @@
+nginx_web_host: 10.1.1.74
+apache_app_host_1: 10.1.1.75
+apache_app_host_2: 10.1.1.76
+mysql_db_host: 10.1.1.77
+mysql_root_password: "theR00tP455w0rd"
+mysql_db_user: dbuser
+mysql_db_password: PASSWORD
+
+

@@ -1,0 +1,7 @@
+[webgroup]
+web1 ansible_host=10.1.1.74
+[appgroup]
+app1 ansible_host=10.1.1.75
+app2 ansible_host=10.1.1.76
+[dbgroup]
+db ansible_host=10.1.1.77
