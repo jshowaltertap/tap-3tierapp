@@ -63,7 +63,7 @@
       command: "mysql -D demoapp1 -u {{ mysql_db_user }} -p'{{ mysql_db_password }}' -e \"{{ item }}\" "
       no_log: true 
       loop:
-        - "create table joke_table (JokeID INT AUTO_INCREMENT KEY, Joke_question VARCHAR(500), Joke_answer VARCHAR(500));"
+        - "create table if not exists joke_table (JokeID INT AUTO_INCREMENT KEY, Joke_question VARCHAR(500), Joke_answer VARCHAR(500));"
         - "INSERT INTO joke_table (JokeID,Joke_question,Joke_answer) VALUES(null,'What time is it when an elephant sits on your fence?','Time to buy a new fence');"
         - "INSERT INTO joke_table (JokeID,Joke_question,Joke_answer) VALUES(null,'Why did the chicken cross the road?','To get to the other side');"
         - "INSERT INTO joke_table (JokeID,Joke_question,Joke_answer) VALUES(null,'What is brown and sticky','A stick');"
